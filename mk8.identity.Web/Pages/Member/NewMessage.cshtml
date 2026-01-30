@@ -10,26 +10,37 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
+                @if (!Model.HasContactInfo)
+                {
+                    <div class="alert alert-warning">
+                        <strong>Contact Information Required</strong><br />
+                        You must provide at least one method of contact before submitting a message.
+                        <a asp-page="/Member/ContactInfo" class="btn btn-sm btn-primary ms-2">Add Contact Info</a>
+                    </div>
+                }
+
                 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
                 {
                     <div class="alert alert-danger">@Model.ErrorMessage</div>
                 }
 
                 <form method="post">
-                    <div class="mb-3">
-                        <label asp-for="Input.Title" class="form-label">Title</label>
-                        <input asp-for="Input.Title" class="form-control" placeholder="Brief summary of your request" />
-                        <span asp-validation-for="Input.Title" class="text-danger"></span>
-                    </div>
+                    <fieldset @(Model.HasContactInfo ? "" : "disabled")>
+                        <div class="mb-3">
+                            <label asp-for="Input.Title" class="form-label">Title</label>
+                            <input asp-for="Input.Title" class="form-control" placeholder="Brief summary of your request" />
+                            <span asp-validation-for="Input.Title" class="text-danger"></span>
+                        </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Input.Description" class="form-label">Description</label>
-                        <textarea asp-for="Input.Description" class="form-control" rows="6" placeholder="Please describe your issue or request in detail..."></textarea>
-                        <span asp-validation-for="Input.Description" class="text-danger"></span>
-                    </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Description" class="form-label">Description</label>
+                            <textarea asp-for="Input.Description" class="form-control" rows="6" placeholder="Please describe your issue or request in detail..."></textarea>
+                            <span asp-validation-for="Input.Description" class="text-danger"></span>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Submit Request</button>
-                    <a asp-page="/Member/Messages" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                        <a asp-page="/Member/Messages" class="btn btn-outline-secondary">Cancel</a>
+                    </fieldset>
                 </form>
             </div>
         </div>

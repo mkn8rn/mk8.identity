@@ -21,6 +21,7 @@ namespace mk8.identity.Application
             services.AddScoped<IMembershipService, MembershipService>();
             services.AddScoped<IContributionService, ContributionService>();
             services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IContactInfoService, ContactInfoService>();
             services.AddScoped<IUserService, UserService>();
 
             // Register background job service

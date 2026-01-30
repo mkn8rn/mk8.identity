@@ -30,6 +30,9 @@ namespace mk8.identity.Infrastructure.Models.Application
         // privileges (one-to-one)
         public PrivilegesDB? Privileges { get; set; }
 
+        // contact info (one-to-one)
+        public ContactInfoDB? ContactInfo { get; set; }
+
         // messages sent by this user
         public List<MessageDB> Messages { get; set; } = [];
     }

@@ -6,6 +6,10 @@
 
 <h2>Submit Contribution</h2>
 
+<div class="alert alert-danger">
+    <strong>If this is your first time submitting a contribution ever, then an assessor will accept merely a description of what you could contribute for your first month. This is for the sake of allowing a trial period to new people. Be honest. Don't overpromise. Factor in your own availability.</strong>
+</div>
+
 <div class="row">
     <div class="col-md-8">
         <div class="card">
@@ -19,6 +23,16 @@
                 {
                     <div class="alert alert-success">@Model.SuccessMessage</div>
                 }
+
+                <div id="howToSection" class="alert alert-info mb-4">
+                    <h6 class="alert-heading"><i class="bi bi-info-circle"></i> What to Submit</h6>
+                    <p class="mb-0">You are not meant to submit your whole contribution here, but merely a description of what you were doing, and if possible a link to either the relevant message, git commit, or anything else that will help your case.</p>
+                </div>
+
+                <div class="alert alert-secondary mb-4">
+                    <h6 class="alert-heading"><i class="bi bi-heart"></i> Can't Contribute?</h6>
+                    <p class="mb-0">If you can't contribute, you can pay $1 a month via <a href="https://github.com/sponsors/mkn8rn" target="_blank" rel="noopener noreferrer">GitHub Sponsors</a>.</p>
+                </div>
 
                 <form method="post">
                     <div class="mb-3">

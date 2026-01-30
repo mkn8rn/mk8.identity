@@ -12,16 +12,19 @@ namespace mk8.identity.Web.Pages.Member
     public class NewMessageModel : PageModel
     {
         private readonly IMessageService _messageService;
+        private readonly IContactInfoService _contactInfoService;
 
-        public NewMessageModel(IMessageService messageService)
+        public NewMessageModel(IMessageService messageService, IContactInfoService contactInfoService)
         {
             _messageService = messageService;
+            _contactInfoService = contactInfoService;
         }
 
         [BindProperty]
         public InputModel Input { get; set; } = new();
 
         public string? ErrorMessage { get; set; }
+        public bool HasContactInfo { get; set; }
 
         public class InputModel
         {
@@ -34,18 +37,35 @@ namespace mk8.identity.Web.Pages.Member
             public string Description { get; set; } = string.Empty;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            var userId = GetUserId();
+            if (userId == null)
+                return RedirectToPage("/Account/Login");
+
+            var contactResult = await _contactInfoService.HasContactInfoAsync(userId.Value);
+            HasContactInfo = contactResult.Success && contactResult.Data;
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-                return Page();
-
             var userId = GetUserId();
             if (userId == null)
                 return RedirectToPage("/Account/Login");
+
+            var contactResult = await _contactInfoService.HasContactInfoAsync(userId.Value);
+            HasContactInfo = contactResult.Success && contactResult.Data;
+
+            if (!HasContactInfo)
+            {
+                ErrorMessage = "You must provide contact information before submitting a message.";
+                return Page();
+            }
+
+            if (!ModelState.IsValid)
+                return Page();
 
             var result = await _messageService.CreateSupportRequestAsync(userId.Value, new SupportRequestCreateDTO
             {

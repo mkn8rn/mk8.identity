@@ -1,0 +1,119 @@
+@page
+@model mk8.identity.Web.Pages.RulesModel
+@{
+    ViewData["Title"] = "Rules";
+}
+
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">Site Rules</h5>
+    </div>
+    <div class="card-body">
+        <p>By using mkn8rn.com and any associated services, you agree to the following:</p>
+        <ol>
+            <li class="mb-2"><strong>Security Vulnerabilities:</strong> If you discover a security vulnerability or bug, you must report it responsibly by submitting an issue to our <a href="https://github.com/mkn8rn/mk8.identity" target="_blank" rel="noopener noreferrer">GitHub repository</a>. Do not exploit, publicise, or distribute vulnerabilities before they are resolved.</li>
+            <li class="mb-2"><strong>No Abuse of Bugs:</strong> You may not exploit bugs, glitches, or unintended behaviour for personal gain or to disrupt the service. This includes circumventing access controls, manipulating contribution records, or bypassing restrictions.</li>
+            <li class="mb-2"><strong>No Illegal Content:</strong> You may not submit, store, or transmit any content that is illegal under applicable law. This includes but is not limited to: content that infringes intellectual property rights, facilitates illegal activity, or constitutes harassment or threats.</li>
+            <li class="mb-2"><strong>No Service Abuse:</strong> You may not use the service in any way that degrades its availability or performance for others. This includes automated access without permission, spam, denial-of-service attempts, or excessive resource consumption.</li>
+            <li class="mb-2"><strong>Account Responsibility:</strong> You are responsible for all activity under your account. Do not share credentials or allow others to use your account. If you suspect unauthorised access, contact staff immediately.</li>
+            <li class="mb-2"><strong>Accurate Information:</strong> Information submitted through the service, including contribution descriptions and contact information, must be truthful and accurate. Misrepresentation may result in removal.</li>
+        </ol>
+        <p class="text-muted mb-0">Violations of these rules may result in account suspension or permanent removal at the discretion of administrators.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-lock"></i> Private Matrix Room Rules</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">These rules apply to rooms on matrix.mkn8rn.com that are not federated.</p>
+
+                <h6>0. Moderation Process</h6>
+                <p>Moderators will present warnings in private before permanent actions are taken. Once moderator accounts are created, a list of them will be made public. For now, only trust private messages from <code>@@root:matrix.mkn8rn.com</code> as warnings.</p>
+
+                <h6>1. Speech and Content</h6>
+                <p>This space is moderated to survive. Speech is permitted only insofar as it does not threaten continuity, reputation, safety, or focus. Keep personal information, high-friction low-value topics, and potentially insensitive content. Enforcement decisions are final and not subject to public debate.</p>
+                <p class="text-muted small"><strong>Examples of inappropriate behaviour:</strong></p>
+                <ul class="text-muted small">
+                    <li>Political commentary, culture-war topics, or media outrage</li>
+                    <li>Sharing personal data, legal issues, or accusations publicly</li>
+                    <li>Edgy humour, irony, or "just joking" content that creates friction</li>
+                    <li>Repeated derailment of technical or learning-focused discussions</li>
+                    <li>Any mention of anything sexual or romantic</li>
+                </ul>
+
+                <h6>2. Authority and Truth</h6>
+                <p>Each member is responsible for determining what is true using their own reasoning. You may provide sources, data, or references, but not demand agreement or compliance. Authority is not implied by seniority, visibility, or output. Only moderators define rules and enforce them. If discussion becomes unproductive, disengagement is the correct response.</p>
+                <p class="text-muted small"><strong>Examples of inappropriate behaviour:</strong></p>
+                <ul class="text-muted small">
+                    <li>Telling others what they must believe or accept</li>
+                    <li>Framing opinions as settled fact without sources</li>
+                    <li>Appealing to status or credentials to override disagreement</li>
+                    <li>Speaking on behalf of the community without authorisation</li>
+                    <li>Correcting or disciplining others instead of providing sources</li>
+                </ul>
+
+                <h6>3. Contribution Expectation</h6>
+                <p>This community is not a resource pool to be extracted from. Participation does not entitle you to attention, answers, mentorship, or labour from others. Contributions are expected to be reciprocal over time, and persistent imbalance may result in removal. The community exists for collaboration, not consumption. If you cannot contribute, then pay.</p>
+                <p class="text-muted small"><strong>Examples of inappropriate behaviour:</strong></p>
+                <ul class="text-muted small mb-0">
+                    <li>Repeated one-sided help requests without contributing</li>
+                    <li>Treating the community as a support desk or free consulting</li>
+                    <li>Recruiting, selling, promoting, or funnelling members elsewhere</li>
+                    <li>Posting only when you need something and disappearing otherwise</li>
+                    <li>Expecting others to research, debug, or decide on your behalf</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-globe"></i> Public Matrix Room Rules</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted small">These rules apply to federated public rooms accessible to all Matrix users.</p>
+
+                <h6>0. Moderation Process</h6>
+                <p>Moderators will present warnings in private before permanent actions are taken. Once moderator accounts are created, a list of them will be made public. For now, only trust private messages from <code>@@root:matrix.mkn8rn.com</code> as warnings.</p>
+
+                <h6>1. Speech and Content</h6>
+                <p>This space is moderated to survive. Speech is permitted only insofar as it does not threaten continuity, reputation, safety, or focus. Keep personal information, high-friction low-value topics, and potentially insensitive content to private channels. Enforcement decisions are final and not subject to public debate.</p>
+                <p class="text-muted small"><strong>Examples of inappropriate behaviour:</strong></p>
+                <ul class="text-muted small">
+                    <li>Political commentary, culture-war topics, or media outrage</li>
+                    <li>Sharing personal data, legal issues, or accusations publicly</li>
+                    <li>Edgy humour, irony, or "just joking" content that creates friction</li>
+                    <li>Repeated derailment of technical or learning-focused discussions</li>
+                    <li>Any mention of anything sexual or romantic</li>
+                </ul>
+
+                <h6>2. Authority and Truth</h6>
+                <p>Each member is responsible for determining what is true using their own reasoning. You may provide sources, data, or references, but not demand agreement or compliance. Authority is not implied by seniority, visibility, or output. Only moderators define rules and enforce them. If discussion becomes unproductive, disengagement is the correct response.</p>
+                <p class="text-muted small"><strong>Examples of inappropriate behaviour:</strong></p>
+                <ul class="text-muted small">
+                    <li>Telling others what they must believe or accept</li>
+                    <li>Framing opinions as settled fact without sources</li>
+                    <li>Appealing to status or credentials to override disagreement</li>
+                    <li>Speaking on behalf of the community without authorisation</li>
+                    <li>Correcting or disciplining others instead of providing sources</li>
+                </ul>
+
+                <h6>3. Passive Participation Permitted</h6>
+                <p>This channel permits passive participation. You may observe, read, and follow discussions without contributing, responding, or engaging. There is no expectation of reciprocity, effort, or participation. Advertising, promotion, or recruitment is allowed in public channels only.</p>
+                <p class="text-muted small"><strong>All the following is permitted:</strong></p>
+                <ul class="text-muted small mb-0">
+                    <li>Reading without replying or reacting</li>
+                    <li>Following discussions without introducing yourself</li>
+                    <li>Sharing links, projects, or announcements</li>
+                    <li>Leaving and returning without notice</li>
+                    <li>Choosing not to engage in debates or requests</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,6 +18,7 @@ namespace mk8.identity.Infrastructure.Contexts
         public DbSet<MatrixAccountDB> MatrixAccounts => Set<MatrixAccountDB>();
         public DbSet<MessageDB> Messages => Set<MessageDB>();
         public DbSet<NotificationDB> Notifications => Set<NotificationDB>();
+        public DbSet<ContactInfoDB> ContactInfos => Set<ContactInfoDB>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -139,6 +140,20 @@ namespace mk8.identity.Infrastructure.Contexts
                     .WithMany()
                     .HasForeignKey(e => e.AssignedToMembershipId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // ContactInfo configuration
+            modelBuilder.Entity<ContactInfoDB>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.MembershipId).IsUnique();
+                entity.Property(e => e.Email).HasMaxLength(255);
+                entity.Property(e => e.Matrix).HasMaxLength(255);
+
+                entity.HasOne(e => e.Membership)
+                    .WithOne(m => m.ContactInfo)
+                    .HasForeignKey<ContactInfoDB>(e => e.MembershipId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }

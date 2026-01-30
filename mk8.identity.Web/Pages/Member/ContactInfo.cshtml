@@ -1,0 +1,52 @@
+@page
+@model mk8.identity.Web.Pages.Member.ContactInfoModel
+@{
+    ViewData["Title"] = "Contact Information";
+}
+
+<h2>Contact Information</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Please provide at least one method of contact. This is required before you can submit messages to staff.
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                {
+                    <div class="alert alert-success">@Model.SuccessMessage</div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">@Model.ErrorMessage</div>
+                }
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label">Email Address</label>
+                        <input asp-for="Input.Email" class="form-control" type="email" placeholder="your@email.com" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <div class="form-text">Optional, but recommended for important notifications.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Matrix" class="form-label">Matrix ID</label>
+                        <input asp-for="Input.Matrix" class="form-control" placeholder="@@username:matrix.org" />
+                        <span asp-validation-for="Input.Matrix" class="text-danger"></span>
+                        <div class="form-text">Your Matrix ID (e.g., @@username:matrix.org or @@username:matrix.mkn8rn.com).</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Contact Info</button>
+                    <a asp-page="/Dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

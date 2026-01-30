@@ -4,7 +4,31 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<h2>Dashboard</h2>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Welcome!</h5>
+            </div>
+            <div class="card-body">
+                <p>Currently, we are using <strong>Matrix</strong> as our primary community space, and this site is only used for identity management, contribution tracking, and support requests. We recommend using <a href="https://element.io/en" target="_blank" rel="noopener noreferrer">Element</a> but you can use any Matrix-compatible client you wish.</p>
+                <p>The community space is divided into two: <strong>public</strong> and <strong>private</strong>. Public rooms are accessible to anyone with a Matrix account, which you can either make for free on providers such as matrix.org or you can self-host your own Matrix instance.</p>
+                <p class="mb-0">Private rooms, where most of the activity is, are only accessible to contributing members who have a mkn8rn Matrix account. In other words, they are not federated and are completely invisible to all but our own Matrix accounts.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">Getting a mkn8rn Matrix Account</h5>
+            </div>
+            <div class="card-body">
+                <p>To get a mkn8rn Matrix account, you must first <a asp-page="/Member/SubmitContribution">submit a Contribution ticket</a> and get your contribution approved. If it's your first time ever submitting one, you can simply introduce yourself and tell us about what potential skills and knowledge you bring to the table, which will count as a valid Contribution but only the first time.</p>
+                <p class="mb-0">Once you have an approved Contribution, you can <a asp-page="/Member/Messages">submit a Message</a> to staff to request a Matrix account. You will receive your temporary credentials here, and then you can log into any Matrix client with it, and join our private Matrix community space.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-6">
@@ -74,9 +98,10 @@
                 <h5 class="mb-0">Quick Actions</h5>
             </div>
             <div class="card-body">
-                <div class="d-grid gap-2">
-                    <a asp-page="/Member/SubmitContribution" class="btn btn-primary">Submit Contribution</a>
-                    <a asp-page="/Member/NewMessage" class="btn btn-outline-secondary">Send Support Request</a>
+            <div class="d-grid gap-2">
+                <a asp-page="/Member/ContactInfo" class="btn btn-outline-secondary">Contact Information</a>
+                <a asp-page="/Member/SubmitContribution" class="btn btn-primary">Submit Contribution</a>
+                <a asp-page="/Member/NewMessage" class="btn btn-outline-secondary">Send Support Request</a>
                     @if (Model.Membership?.IsActive == true)
                     {
                         @if (!Model.HasMatrixAccount)

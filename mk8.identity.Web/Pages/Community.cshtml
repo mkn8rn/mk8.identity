@@ -1,0 +1,37 @@
+@page
+@model mk8.identity.Web.Pages.CommunityModel
+@{
+    ViewData["Title"] = "Community";
+}
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-lock"></i> Private Matrix Rooms</h5>
+            </div>
+            <div class="card-body">
+                <p>These rooms are only accessible to <strong>matrix.mkn8rn.com</strong> accounts.</p>
+                <p class="text-muted small">Most of our community activity happens here. You need a mkn8rn Matrix account to access these rooms.</p>
+                <a href="https://matrix.to/#/#s1:matrix.mkn8rn.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    <i class="bi bi-box-arrow-up-right"></i> Join Private Rooms
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-globe"></i> Public Matrix Rooms</h5>
+            </div>
+            <div class="card-body">
+                <p>These rooms are accessible to <strong>all Matrix accounts</strong>, regardless of origin server.</p>
+                <p class="text-muted small">Anyone with a Matrix account from any server (matrix.org, etc.) can join and participate.</p>
+                <a href="https://matrix.to/#/#p1:matrix.mkn8rn.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">
+                    <i class="bi bi-box-arrow-up-right"></i> Join Public Rooms
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
