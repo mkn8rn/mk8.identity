@@ -1,0 +1,54 @@
+@page
+@model mk8.identity.Web.Pages.Member.RequestMatrixModel
+@{
+    ViewData["Title"] = "Request Matrix Account";
+}
+
+<h2>Request Matrix Account</h2>
+
+@if (!Model.CanRequest)
+{
+    <div class="alert alert-warning">
+        <h5>Cannot Request Matrix Account</h5>
+        <p class="mb-0">@Model.CannotRequestReason</p>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">@Model.ErrorMessage</div>
+                    }
+
+                    <p class="text-muted mb-4">
+                        Request a Matrix account to access the community chat. An administrator will create your account 
+                        and provide you with a temporary password.
+                    </p>
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="Input.DesiredUsername" class="form-label">Desired Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text">@@</span>
+                                <input asp-for="Input.DesiredUsername" class="form-control" placeholder="yourname" />
+                            </div>
+                            <div class="form-text">3-32 characters, letters, numbers, underscores, and hyphens only.</div>
+                            <span asp-validation-for="Input.DesiredUsername" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Request Account</button>
+                        <a asp-page="/Member/Messages" class="btn btn-outline-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,91 @@
+@page
+@model mk8.identity.Web.Pages.Staff.MatrixAccountsModel
+@{
+    ViewData["Title"] = "Matrix Accounts";
+}
+
+<h2>Matrix Accounts</h2>
+
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link @(Model.Filter == "all" ? "active" : "")" asp-page="/Staff/MatrixAccounts" asp-route-filter="all">All</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.Filter == "active" ? "active" : "")" asp-page="/Staff/MatrixAccounts" asp-route-filter="active">Active</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.Filter == "disabled" ? "active" : "")" asp-page="/Staff/MatrixAccounts" asp-route-filter="disabled">Disabled</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.Filter == "requires-disable" ? "active" : "") text-danger" asp-page="/Staff/MatrixAccounts" asp-route-filter="requires-disable">
+            Requires Disable @if (Model.RequiresDisableCount > 0) { <span class="badge bg-danger">@Model.RequiresDisableCount</span> }
+        </a>
+    </li>
+</ul>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">@Model.SuccessMessage</div>
+}
+
+@if (Model.Accounts?.Any() == true)
+{
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Owner</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var account in Model.Accounts)
+                    {
+                        <tr>
+                            <td><code>@@@account.Username</code></td>
+                            <td>@account.OwnerUsername</td>
+                            <td>
+                                @if (account.IsDisabled)
+                                {
+                                    <span class="badge bg-secondary">Disabled</span>
+                                    @if (account.DisabledAt.HasValue)
+                                    {
+                                        <br /><small class="text-muted">@account.DisabledAt.Value.ToString("MMM d, yyyy")</small>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                            </td>
+                            <td>@account.CreatedAt.ToString("MMM d, yyyy")</td>
+                            <td>
+                                <form method="post" class="d-inline">
+                                    <input type="hidden" name="accountId" value="@account.Id" />
+                                    @if (account.IsDisabled)
+                                    {
+                                        <button type="submit" asp-page-handler="Enable" class="btn btn-sm btn-success">Enable</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" asp-page-handler="Disable" class="btn btn-sm btn-danger">Disable</button>
+                                    }
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No Matrix accounts found.
+    </div>
+}

@@ -1,0 +1,41 @@
+@page
+@model mk8.identity.Web.Pages.Member.NewMessageModel
+@{
+    ViewData["Title"] = "New Support Request";
+}
+
+<h2>New Support Request</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">@Model.ErrorMessage</div>
+                }
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Input.Title" class="form-label">Title</label>
+                        <input asp-for="Input.Title" class="form-control" placeholder="Brief summary of your request" />
+                        <span asp-validation-for="Input.Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Description" class="form-label">Description</label>
+                        <textarea asp-for="Input.Description" class="form-control" rows="6" placeholder="Please describe your issue or request in detail..."></textarea>
+                        <span asp-validation-for="Input.Description" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit Request</button>
+                    <a asp-page="/Member/Messages" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

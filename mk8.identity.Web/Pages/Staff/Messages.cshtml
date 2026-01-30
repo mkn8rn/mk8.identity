@@ -1,0 +1,122 @@
+@page
+@model mk8.identity.Web.Pages.Staff.MessagesModel
+@{
+    ViewData["Title"] = "Staff Messages";
+}
+
+<h2>Messages & Requests</h2>
+
+<ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+        <a class="nav-link @(Model.Filter == "all" ? "active" : "")" asp-page="/Staff/Messages" asp-route-filter="all">All</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.Filter == "support" ? "active" : "")" asp-page="/Staff/Messages" asp-route-filter="support">Support Requests</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.Filter == "matrix" ? "active" : "")" asp-page="/Staff/Messages" asp-route-filter="matrix">Matrix Requests</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model.Filter == "pending" ? "active" : "")" asp-page="/Staff/Messages" asp-route-filter="pending">Pending Only</a>
+    </li>
+</ul>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">@Model.SuccessMessage</div>
+}
+
+@if (Model.Messages?.Any() == true)
+{
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>From</th>
+                        <th>Details</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var message in Model.Messages)
+                    {
+                        <tr>
+                            <td>
+                                @if (message.Type == mk8.identity.Contracts.Models.MessageTypeDTO.SupportRequest)
+                                {
+                                    <span class="badge bg-secondary">Support</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">Matrix</span>
+                                }
+                            </td>
+                            <td>@message.SenderUsername</td>
+                            <td>
+                                @if (message.Type == mk8.identity.Contracts.Models.MessageTypeDTO.SupportRequest)
+                                {
+                                    <strong>@message.Title</strong>
+                                    @if (!string.IsNullOrEmpty(message.Description))
+                                    {
+                                        <br /><small>@(message.Description.Length > 80 ? message.Description[..80] + "..." : message.Description)</small>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>Username: <strong>@message.DesiredMatrixUsername</strong></span>
+                                }
+                            </td>
+                            <td>
+                                @switch (message.Status)
+                                {
+                                    case mk8.identity.Contracts.Models.MessageStatusDTO.Pending:
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.MessageStatusDTO.InProgress:
+                                        <span class="badge bg-info">In Progress</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.MessageStatusDTO.Completed:
+                                        <span class="badge bg-success">Completed</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.MessageStatusDTO.Rejected:
+                                        <span class="badge bg-danger">Rejected</span>
+                                        break;
+                                }
+                            </td>
+                            <td>@message.CreatedAt.ToString("MMM d")</td>
+                            <td>
+                                @if (message.Status == mk8.identity.Contracts.Models.MessageStatusDTO.Pending || 
+                                     message.Status == mk8.identity.Contracts.Models.MessageStatusDTO.InProgress)
+                                {
+                                    @if (message.Type == mk8.identity.Contracts.Models.MessageTypeDTO.MatrixAccountCreationRequest && User.IsInRole("Administrator"))
+                                    {
+                                        <a asp-page="/Staff/CompleteMatrixRequest" asp-route-id="@message.Id" class="btn btn-sm btn-primary">Complete</a>
+                                    }
+                                    <form method="post" class="d-inline">
+                                        <input type="hidden" name="messageId" value="@message.Id" />
+                                        @if (message.Status == mk8.identity.Contracts.Models.MessageStatusDTO.Pending)
+                                        {
+                                            <button type="submit" asp-page-handler="InProgress" class="btn btn-sm btn-outline-info">In Progress</button>
+                                        }
+                                        <button type="submit" asp-page-handler="Complete" class="btn btn-sm btn-outline-success">Complete</button>
+                                        <button type="submit" asp-page-handler="Reject" class="btn btn-sm btn-outline-danger">Reject</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No messages found.
+    </div>
+}

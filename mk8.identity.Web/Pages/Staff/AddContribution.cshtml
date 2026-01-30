@@ -1,0 +1,62 @@
+@page "{userId:guid}"
+@model mk8.identity.Web.Pages.Staff.AddContributionModel
+@{
+    ViewData["Title"] = "Add Contribution";
+}
+
+<h2>Add Contribution for @Model.Username</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">@Model.ErrorMessage</div>
+                }
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Input.Type" class="form-label">Contribution Type</label>
+                        <select asp-for="Input.Type" class="form-select" asp-items="Model.ContributionTypes"></select>
+                        <span asp-validation-for="Input.Type" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Input.Month" class="form-label">Month</label>
+                                <select asp-for="Input.Month" class="form-select" asp-items="Model.Months"></select>
+                                <span asp-validation-for="Input.Month" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Input.Year" class="form-label">Year</label>
+                                <select asp-for="Input.Year" class="form-select" asp-items="Model.Years"></select>
+                                <span asp-validation-for="Input.Year" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Description" class="form-label">Description (optional)</label>
+                        <textarea asp-for="Input.Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Input.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="alert alert-info">
+                        This contribution will be immediately validated and count towards the member's active status.
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add & Validate Contribution</button>
+                    <a asp-page="/Staff/Members" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

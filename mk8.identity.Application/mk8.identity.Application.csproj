@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\mk8.identity.Contracts\mk8.identity.Contracts.csproj" />
+    <ProjectReference Include="..\mk8.identity.Infrastructure\mk8.identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\mk8.identity.Utils\mk8.identity.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

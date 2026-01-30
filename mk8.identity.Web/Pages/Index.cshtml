@@ -1,0 +1,33 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-4">Welcome to mkn8rn.com</h1>
+    <p class="lead">A contribution-based membership community</p>
+    
+    <div class="col-lg-8 mx-auto mb-4">
+        <p class="text-muted">
+            This space, hosted on my domain and my private home servers, exists to facilitate collaboration, learning, and the exchange of ideas in an environment that remains open, respectful, and technically rigorous. Participation here implies a willingness to engage in good faith, to explain and be explained to, and to accept that disagreement is not only expected but necessary for progress. Authority within this community derives from contribution, clarity, and demonstrated understanding, not from titles, seniority, or volume. Questions are welcome when they are honest; answers are valued when they are precise. We optimise for signal over noise, substance over performance, and long-term usefulness over short-term gratification.
+        </p>
+        <p class="text-muted">
+            Everything else, including rules, structure, and moderation, exists only to serve that end. This is not "my" community, nor does it belong to me, though I may refer to it as such. I am merely the administrator of it. All works and texts within it belong to their respective authors, and becoming a member and participating in it does not grant me any license over your contributions.
+        </p>
+    </div>
+
+    @if (User.Identity?.IsAuthenticated != true)
+    {
+        <div class="mt-4">
+            <a asp-page="/Account/Register" class="btn btn-primary btn-lg me-2">Join Now</a>
+            <a asp-page="/Account/Login" class="btn btn-outline-secondary btn-lg">Login</a>
+        </div>
+    }
+    else
+    {
+        <div class="mt-4">
+            <a asp-page="/Dashboard" class="btn btn-primary btn-lg">Go to Dashboard</a>
+        </div>
+    }
+</div>

@@ -1,0 +1,104 @@
+@page
+@model mk8.identity.Web.Pages.Member.MessagesModel
+@{
+    ViewData["Title"] = "My Messages";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>My Messages</h2>
+    <div>
+        <a asp-page="/Member/NewMessage" class="btn btn-outline-primary">Support Request</a>
+        @if (Model.CanRequestMatrix)
+        {
+            <a asp-page="/Member/RequestMatrix" class="btn btn-primary">Request Matrix Account</a>
+        }
+    </div>
+</div>
+
+@if (Model.Messages?.Any() == true)
+{
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Details</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Handled</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var message in Model.Messages)
+                    {
+                        <tr>
+                            <td>
+                                @if (message.Type == mk8.identity.Contracts.Models.MessageTypeDTO.SupportRequest)
+                                {
+                                    <span class="badge bg-secondary">Support</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary">Matrix Request</span>
+                                }
+                            </td>
+                            <td>
+                                @if (message.Type == mk8.identity.Contracts.Models.MessageTypeDTO.SupportRequest)
+                                {
+                                    <strong>@message.Title</strong>
+                                    @if (!string.IsNullOrEmpty(message.Description))
+                                    {
+                                        <br /><small class="text-muted">@(message.Description.Length > 100 ? message.Description[..100] + "..." : message.Description)</small>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>Requested username: <strong>@message.DesiredMatrixUsername</strong></span>
+                                }
+                            </td>
+                            <td>
+                                @switch (message.Status)
+                                {
+                                    case mk8.identity.Contracts.Models.MessageStatusDTO.Pending:
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.MessageStatusDTO.InProgress:
+                                        <span class="badge bg-info">In Progress</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.MessageStatusDTO.Completed:
+                                        <span class="badge bg-success">Completed</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.MessageStatusDTO.Rejected:
+                                        <span class="badge bg-danger">Rejected</span>
+                                        break;
+                                }
+                            </td>
+                            <td>@message.CreatedAt.ToString("MMM d, yyyy")</td>
+                            <td>
+                                @if (message.HandledAt.HasValue)
+                                {
+                                    @message.HandledAt.Value.ToString("MMM d, yyyy")
+                                    @if (!string.IsNullOrEmpty(message.SpecialInstructions))
+                                    {
+                                        <br /><small class="text-muted">@message.SpecialInstructions</small>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No messages yet.
+    </div>
+}

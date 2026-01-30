@@ -1,0 +1,84 @@
+@page
+@model mk8.identity.Web.Pages.Staff.NotificationsModel
+@{
+    ViewData["Title"] = "Staff Notifications";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Notifications</h2>
+    @if (Model.Notifications.Any(n => !n.IsRead))
+    {
+        <form method="post" asp-page-handler="MarkAllRead">
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Mark All as Read</button>
+        </form>
+    }
+</div>
+
+@if (Model.Notifications?.Any() == true)
+{
+    <div class="list-group">
+        @foreach (var notification in Model.Notifications)
+        {
+            <div class="list-group-item @(!notification.IsRead ? "list-group-item-light" : "")">
+                <div class="d-flex w-100 justify-content-between align-items-start">
+                    <div>
+                        <div class="d-flex align-items-center mb-2">
+                            @switch (notification.Priority)
+                            {
+                                case mk8.identity.Contracts.Models.NotificationPriorityDTO.Urgent:
+                                    <span class="badge bg-danger me-2">Urgent</span>
+                                    break;
+                                case mk8.identity.Contracts.Models.NotificationPriorityDTO.High:
+                                    <span class="badge bg-warning text-dark me-2">High</span>
+                                    break;
+                                case mk8.identity.Contracts.Models.NotificationPriorityDTO.Normal:
+                                    <span class="badge bg-info me-2">Normal</span>
+                                    break;
+                                case mk8.identity.Contracts.Models.NotificationPriorityDTO.Low:
+                                    <span class="badge bg-secondary me-2">Low</span>
+                                    break;
+                            }
+                            <h6 class="mb-0">@notification.Title</h6>
+                            @if (!notification.IsRead)
+                            {
+                                <span class="badge bg-primary ms-2">New</span>
+                            }
+                        </div>
+                        <p class="mb-2">@notification.Message</p>
+                        @if (!string.IsNullOrEmpty(notification.RelatedUsername))
+                        {
+                            <small class="text-muted">Related user: @notification.RelatedUsername</small>
+                        }
+                    </div>
+                    <div class="text-end">
+                        <small class="text-muted d-block">@notification.CreatedAt.ToString("MMM d, yyyy HH:mm")</small>
+                        @if (!notification.IsRead)
+                        {
+                            <form method="post" asp-page-handler="MarkRead" class="mt-2">
+                                <input type="hidden" name="notificationId" value="@notification.Id" />
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Mark Read</button>
+                            </form>
+                        }
+                        @if (notification.IsActionRequired && !notification.IsActionCompleted)
+                        {
+                            <form method="post" asp-page-handler="MarkComplete" class="mt-2">
+                                <input type="hidden" name="notificationId" value="@notification.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Mark Complete</button>
+                            </form>
+                        }
+                        @if (notification.IsActionCompleted)
+                        {
+                            <span class="badge bg-success mt-2">Action Completed</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No notifications.
+    </div>
+}

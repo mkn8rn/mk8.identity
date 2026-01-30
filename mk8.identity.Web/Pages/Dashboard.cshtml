@@ -1,0 +1,177 @@
+@page
+@model mk8.identity.Web.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Membership Status</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Membership != null)
+                {
+                    <div class="mb-3">
+                        <strong>Status:</strong>
+                        @if (Model.Membership.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else if (Model.Membership.IsInGracePeriod)
+                        {
+                            <span class="badge bg-warning text-dark">Grace Period</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Inactive</span>
+                        }
+                    </div>
+
+                    @if (Model.Membership.IsActive || Model.Membership.IsInGracePeriod)
+                    {
+                        <p><strong>Member since:</strong> @Model.Membership.StartDate.ToString("MMMM d, yyyy")</p>
+                        
+                        @if (Model.Membership.ExpiresAt.HasValue)
+                        {
+                            <p><strong>Expires:</strong> @Model.Membership.ExpiresAt.Value.ToString("MMMM d, yyyy")</p>
+                        }
+
+                        @if (Model.Membership.IsInGracePeriod)
+                        {
+                            <div class="alert alert-warning">
+                                <strong>Grace Period:</strong> You have @Model.Membership.GracePeriodMonthsRemaining months remaining.
+                                Please submit a contribution to maintain your membership.
+                            </div>
+                        }
+
+                        <p><strong>Grace Period Earned:</strong> @Model.Membership.GracePeriodMonthsEarned months</p>
+                        <p><strong>Total Years as Member:</strong> @Model.Membership.TotalYearsAsMember</p>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            Your membership is not yet active. Submit a contribution to activate it!
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        Unable to load membership information.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a asp-page="/Member/SubmitContribution" class="btn btn-primary">Submit Contribution</a>
+                    <a asp-page="/Member/NewMessage" class="btn btn-outline-secondary">Send Support Request</a>
+                    @if (Model.Membership?.IsActive == true)
+                    {
+                        @if (!Model.HasMatrixAccount)
+                        {
+                            <a asp-page="/Member/RequestMatrix" class="btn btn-outline-primary">Request Matrix Account</a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">You have a Matrix account</span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Privileges</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Privileges != null)
+                {
+                    <p>
+                        <strong>Voting Rights:</strong>
+                        @if (Model.Privileges.VotingRights)
+                        {
+                            <span class="badge bg-success">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">No</span>
+                        }
+                    </p>
+                    <p>
+                        <strong>Matrix Accounts:</strong> @Model.Privileges.MatrixAccounts.Count
+                    </p>
+                }
+                else
+                {
+                    <p class="text-muted">No privileges assigned yet.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Recent Contributions</h5>
+        <a asp-page="/Member/Contributions" class="btn btn-sm btn-outline-primary">View All</a>
+    </div>
+    <div class="card-body">
+        @if (Model.RecentContributions?.Any() == true)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Submitted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contribution in Model.RecentContributions)
+                    {
+                        <tr>
+                            <td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(contribution.Month) @contribution.Year</td>
+                            <td>@contribution.Type</td>
+                            <td>
+                                @switch (contribution.Status)
+                                {
+                                    case mk8.identity.Contracts.Models.ContributionStatusDTO.Pending:
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.ContributionStatusDTO.Validated:
+                                        <span class="badge bg-success">Validated</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.ContributionStatusDTO.Rejected:
+                                        <span class="badge bg-danger">Rejected</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.ContributionStatusDTO.AutoVerified:
+                                        <span class="badge bg-info">Auto-Verified</span>
+                                        break;
+                                }
+                            </td>
+                            <td>@contribution.SubmittedAt.ToString("MMM d, yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">No contributions yet. <a asp-page="/Member/SubmitContribution">Submit your first contribution</a></p>
+        }
+    </div>
+</div>

@@ -1,0 +1,79 @@
+@page "{id:guid}"
+@model mk8.identity.Web.Pages.Staff.CompleteMatrixRequestModel
+@{
+    ViewData["Title"] = "Complete Matrix Account Request";
+}
+
+<h2>Complete Matrix Account Request</h2>
+
+@if (Model.Message == null)
+{
+    <div class="alert alert-danger">Request not found.</div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Request Details</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Requested By</dt>
+                        <dd class="col-sm-8">@Model.Message.SenderUsername</dd>
+
+                        <dt class="col-sm-4">Desired Username</dt>
+                        <dd class="col-sm-8"><code>@@@Model.Message.DesiredMatrixUsername</code></dd>
+
+                        <dt class="col-sm-4">Requested On</dt>
+                        <dd class="col-sm-8">@Model.Message.CreatedAt.ToString("MMMM d, yyyy HH:mm")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Complete Request</h5>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">@Model.ErrorMessage</div>
+                    }
+
+                    <div class="alert alert-info">
+                        <strong>Instructions:</strong>
+                        <ol class="mb-0 mt-2">
+                            <li>Create the Matrix account <code>@@@Model.Message.DesiredMatrixUsername:matrix.example.org</code> on your Matrix server</li>
+                            <li>Set a temporary password for the user</li>
+                            <li>Fill in the form below and click "Complete Request"</li>
+                        </ol>
+                    </div>
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="Input.TemporaryPassword" class="form-label">Temporary Password</label>
+                            <input asp-for="Input.TemporaryPassword" class="form-control" />
+                            <div class="form-text">The password you set for the user's Matrix account.</div>
+                            <span asp-validation-for="Input.TemporaryPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.SpecialInstructions" class="form-label">Special Instructions (optional)</label>
+                            <textarea asp-for="Input.SpecialInstructions" class="form-control" rows="3" placeholder="Any additional instructions for the user..."></textarea>
+                            <span asp-validation-for="Input.SpecialInstructions" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Complete Request</button>
+                        <a asp-page="/Staff/Messages" class="btn btn-outline-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

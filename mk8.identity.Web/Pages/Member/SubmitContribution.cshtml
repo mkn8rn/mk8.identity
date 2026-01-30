@@ -1,0 +1,84 @@
+@page
+@model mk8.identity.Web.Pages.Member.SubmitContributionModel
+@{
+    ViewData["Title"] = "Submit Contribution";
+}
+
+<h2>Submit Contribution</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">@Model.ErrorMessage</div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                {
+                    <div class="alert alert-success">@Model.SuccessMessage</div>
+                }
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Input.Type" class="form-label">Contribution Type</label>
+                        <select asp-for="Input.Type" class="form-select" asp-items="Model.ContributionTypes"></select>
+                        <span asp-validation-for="Input.Type" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Input.Month" class="form-label">Month</label>
+                                <select asp-for="Input.Month" class="form-select" asp-items="Model.Months"></select>
+                                <span asp-validation-for="Input.Month" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="Input.Year" class="form-label">Year</label>
+                                <select asp-for="Input.Year" class="form-select" asp-items="Model.Years"></select>
+                                <span asp-validation-for="Input.Year" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Description" class="form-label">Description (optional)</label>
+                        <textarea asp-for="Input.Description" class="form-control" rows="4" placeholder="Describe your contribution..."></textarea>
+                        <span asp-validation-for="Input.Description" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit Contribution</button>
+                    <a asp-page="/Member/Contributions" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">Contribution Types</h6>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <dt>Expert Knowledge</dt>
+                    <dd class="text-muted small">Contributing specialized knowledge, tutorials, documentation, or educational content</dd>
+                    
+                    <dt>Project Collaboration</dt>
+                    <dd class="text-muted small">Working on community projects, code contributions, or collaborative initiatives</dd>
+                </dl>
+                <hr />
+                <p class="text-muted small mb-0">
+                    <strong>Note:</strong> Role-based contributions (Administrator, Moderator, Support) and payments (GitHub Sponsorship, Donations) are assigned automatically.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

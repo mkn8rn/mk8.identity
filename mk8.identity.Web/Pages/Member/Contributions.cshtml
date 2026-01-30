@@ -1,0 +1,79 @@
+@page
+@model mk8.identity.Web.Pages.Member.ContributionsModel
+@{
+    ViewData["Title"] = "My Contributions";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>My Contributions</h2>
+    <a asp-page="/Member/SubmitContribution" class="btn btn-primary">Submit New Contribution</a>
+</div>
+
+@if (Model.Contributions?.Any() == true)
+{
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Submitted</th>
+                        <th>Validated</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contribution in Model.Contributions)
+                    {
+                        <tr>
+                            <td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(contribution.Month) @contribution.Year</td>
+                            <td>@contribution.Type</td>
+                            <td>
+                                @switch (contribution.Status)
+                                {
+                                    case mk8.identity.Contracts.Models.ContributionStatusDTO.Pending:
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.ContributionStatusDTO.Validated:
+                                        <span class="badge bg-success">Validated</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.ContributionStatusDTO.Rejected:
+                                        <span class="badge bg-danger">Rejected</span>
+                                        break;
+                                    case mk8.identity.Contracts.Models.ContributionStatusDTO.AutoVerified:
+                                        <span class="badge bg-info">Auto-Verified</span>
+                                        break;
+                                }
+                            </td>
+                            <td>@contribution.SubmittedAt.ToString("MMM d, yyyy")</td>
+                            <td>
+                                @if (contribution.ValidatedAt.HasValue)
+                                {
+                                    <span>@contribution.ValidatedAt.Value.ToString("MMM d, yyyy")</span>
+                                    @if (!string.IsNullOrEmpty(contribution.ValidatedByUsername))
+                                    {
+                                        <br /><small class="text-muted">by @contribution.ValidatedByUsername</small>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                            <td>@(contribution.Description ?? "-")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <h5>No contributions yet</h5>
+        <p class="mb-0">Submit your first contribution to activate your membership!</p>
+    </div>
+}

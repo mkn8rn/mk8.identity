@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Application/">
+    <Project Path="mk8.identity.Application/mk8.identity.Application.csproj" />
+    <Project Path="mk8.identity.Infrastructure/mk8.identity.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Browser/">
+    <Project Path="mk8.identity.Web/mk8.identity.Web.csproj" />
+  </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="mk8.identity.Contracts/mk8.identity.Contracts.csproj" />
+    <Project Path="mk8.identity.Utils/mk8.identity.Utils.csproj" />
+  </Folder>
+</Solution>

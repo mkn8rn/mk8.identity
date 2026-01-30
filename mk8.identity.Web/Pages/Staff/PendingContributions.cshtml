@@ -1,0 +1,62 @@
+@page
+@model mk8.identity.Web.Pages.Staff.PendingContributionsModel
+@{
+    ViewData["Title"] = "Pending Contributions";
+}
+
+<h2>Pending Contributions</h2>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">@Model.SuccessMessage</div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+@if (Model.Contributions?.Any() == true)
+{
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Period</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Submitted</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var contribution in Model.Contributions)
+                    {
+                        <tr>
+                            <td>@(contribution.SubmittedByUsername ?? "Unknown")</td>
+                            <td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(contribution.Month) @contribution.Year</td>
+                            <td>@contribution.Type</td>
+                            <td>@(contribution.Description ?? "-")</td>
+                            <td>@contribution.SubmittedAt.ToString("MMM d, yyyy")</td>
+                            <td>
+                                <form method="post" class="d-inline">
+                                    <input type="hidden" name="contributionId" value="@contribution.Id" />
+                                    <button type="submit" asp-page-handler="Approve" class="btn btn-sm btn-success">Approve</button>
+                                    <button type="submit" asp-page-handler="Reject" class="btn btn-sm btn-danger">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No pending contributions to review.
+    </div>
+}

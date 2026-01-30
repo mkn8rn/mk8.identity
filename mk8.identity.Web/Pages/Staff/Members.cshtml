@@ -1,0 +1,71 @@
+@page
+@model mk8.identity.Web.Pages.Staff.MembersModel
+@{
+    ViewData["Title"] = "Members";
+}
+
+<h2>Members</h2>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success">@Model.SuccessMessage</div>
+}
+
+@if (Model.Users?.Any() == true)
+{
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Membership</th>
+                        <th>Registered</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        var membership = Model.Memberships.GetValueOrDefault(user.Id);
+                        <tr>
+                            <td>@user.Username</td>
+                            <td>
+                                @if (membership != null)
+                                {
+                                    @if (membership.IsActive)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else if (membership.IsInGracePeriod)
+                                    {
+                                        <span class="badge bg-warning text-dark">Grace Period</span>
+                                        <br /><small class="text-muted">@membership.GracePeriodMonthsRemaining months left</small>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                            <td>@user.CreatedAt.ToString("MMM d, yyyy")</td>
+                            <td>
+                                <a asp-page="/Staff/AddContribution" asp-route-userId="@user.Id" class="btn btn-sm btn-outline-success">Add Contribution</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No members found.
+    </div>
+}
